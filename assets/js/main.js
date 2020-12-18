@@ -12,6 +12,7 @@ var game = new Phaser.Game(config);
 
 function preload() {
     this.load.image('button1', 'assets/images/ui/blue_button01.png');
+    this.load.spritesheet('items', 'assets/images/items.png', { frameWidth: 32, frameHeight: 32});
 }
 
 function create() {
@@ -19,4 +20,7 @@ function create() {
     button.setOrigin(0.5, 0.5);
 
     this.add.sprite(300, 100, 'button1');
+
+    // the last argument is the item on the spritesheet
+    this.add.image(300, 300, 'items', 0);
 }
