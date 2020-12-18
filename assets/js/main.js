@@ -5,6 +5,15 @@ var config = {
     scene: {
         preload: preload,
         create: create
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: true,
+            gravity: {
+                y: 0,
+            }
+        }
     }
 }
 
@@ -23,4 +32,6 @@ function create() {
 
     // the last argument is the item on the spritesheet
     this.add.image(300, 300, 'items', 0);
+
+    this.physics.add.image(500, 100, 'button1');
 }
