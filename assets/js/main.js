@@ -4,7 +4,8 @@ var config = {
     height: 600,
     scene: {
         preload: preload,
-        create: create
+        create: create,
+        update: update
     },
     physics: {
         default: 'arcade',
@@ -22,6 +23,7 @@ var game = new Phaser.Game(config);
 function preload() {
     this.load.image('button1', 'assets/images/ui/blue_button01.png');
     this.load.spritesheet('items', 'assets/images/items.png', { frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('characters', 'assets/images/characters.png', { frameWidth:32, frameHeight: 32});
 }
 
 function create() {
@@ -34,4 +36,27 @@ function create() {
     this.add.image(300, 300, 'items', 0);
 
     this.physics.add.image(500, 100, 'button1');
+
+    this.player = this.physics.add.image(32, 32, 'characters', 0);
+    // change the size of the object, can specify x, y value, specify 1 value will be for both x and y
+    this.player.setScale(2);
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+}
+
+function update() {
+    // for both x and y
+    this.player.setVelocity(0);
+
+    if (this.cursors.left.isDown) {
+        this.player.setVelocityX(-160);
+    } else if (this.cursors.right.isDown) {
+        this.player.setVelocityX(160);
+    }
+
+    if (this.cursors.up.isDown) {
+        this.player.setVelocityY(-160);
+    } else if (this.cursors.down.isDown) {
+        this.player.setVelocityY(160);
+    }
 }
