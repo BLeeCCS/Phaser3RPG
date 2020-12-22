@@ -3,9 +3,16 @@ class GameScene extends Phaser.Scene {
         super('Game');
     }
 
+    init() {
+        // launch: fire off scene in parrallel
+        // start: shutdown current scene and transistion to new scene
+        // whatever scene active first will be on the bottom layer
+        this.scene.launch('Ui');
+    }
+
     create() {
         // audio
-        var goldPickupAudio = this.sound.add('goldSound', { loop: false, volume: 1 });
+        this.goldPickupAudio = this.sound.add('goldSound', { loop: false, volume: 1 });
 
 
         // the last argument is the item on the spritesheet
@@ -19,15 +26,21 @@ class GameScene extends Phaser.Scene {
         // change the size of the object, can specify x, y value, specify 1 value will be for both x and y
 
         this.physics.add.collider(this.player, this.wall);
-        this.physics.add.overlap(this.player, this.chest, function(player, chest) {
-            goldPickupAudio.play();
-            chest.destroy();
-        });
+        this.physics.add.overlap(this.player, this.chest, this.collectChest, null, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
     }
     
     update() {
         this.player.update(this.cursors);
+    }
+
+    collectChest(player, chest) {
+        // play gold pickup sound
+        this.goldPickupAudio.play();
+        // update score in the ui
+        this.events.emit('updateScore', chest.coins);
+        // destroy the chest game object
+        chest.destroy();
     }
 }
